@@ -1,0 +1,9 @@
+[functions]
+  node_bundler = "esbuild"
+  directory = "netlify/functions/"
+
+  [functions.stale-issues]
+    schedule = "2 2 * * *" # Runs at 9:00 AM daily
+
+[build]
+  publish = "dist"
