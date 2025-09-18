@@ -1,9 +1,16 @@
 [build]
-  publish = "."   # use current root, where index.html is
+  publish = "."
 
 [functions]
   directory = "netlify/functions/"
-  node_bundler = "esbuild"
 
+  # Specify a Python runtime for your functions
+  # This tells Netlify to use the Python build image
+  external_node_modules = []
+  
+  [build.environment]
+    NETLIFY_PYTHON_VERSION = "3.9" # or the Python version you use
+
+  # Optional: for the cron job
   [functions.stale-issues]
-    schedule = "2 2 * * *" # Optional: only if you want CRON job
+    schedule = "2 2 * * *"
