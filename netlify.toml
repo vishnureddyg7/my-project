@@ -2,7 +2,7 @@
   publish = "."   # use current root, where index.html is
 
 [functions]
-  directory = "netlify/functions"
+  directory = "netlify/functions/"
   node_bundler = "esbuild"
 
   [functions.stale-issues]
