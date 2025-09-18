@@ -1,0 +1,6 @@
+[functions]
+  node_bundler = "esbuild"
+  directory = "netlify/functions/"
+
+[build]
+  publish = "dist"  # This is a placeholder, as Python functions don't need a publish directory
