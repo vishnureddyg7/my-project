@@ -2,7 +2,7 @@
   publish = "."
 
 [functions]
-  directory = "/.netlify/functions/"
+  directory = "/netlify/functions/"
 
 [build.environment]
   NETLIFY_PYTHON_VERSION = "3.9"
