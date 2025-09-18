@@ -61,7 +61,8 @@ def handler(event, context):
                 server.starttls()
                 server.login(EMAIL_USER, EMAIL_PASS)
                 server.sendmail(EMAIL_USER, TO_EMAIL, msg.as_string())
-            return {"statusCode": 200, "body": "✅ Email sent"}
+            return {"statusCode": 200,"headers": { "Content-Type": "application/json" },"body": json.dumps({ "message": "✅ Email sent" })}
+
         except Exception as e:
             return {"statusCode": 500, "body": f"❌ Email sending failed: {str(e)}"}
     else:
