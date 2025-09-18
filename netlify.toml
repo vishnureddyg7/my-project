@@ -1,9 +1,9 @@
+[build]
+  publish = "."   # use current root, where index.html is
+
 [functions]
+  directory = "netlify/functions"
   node_bundler = "esbuild"
-  directory = "netlify/functions/"
 
   [functions.stale-issues]
-    schedule = "2 2 * * *" # Runs at 9:00 AM daily
-
-[build]
-  publish = "dist"
+    schedule = "2 2 * * *" # Optional: only if you want CRON job
