@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.header import Header
+import json
 
 def handler(event, context):
     # --- Config from Environment Variables ---
@@ -13,7 +14,7 @@ def handler(event, context):
     EMAIL_PASS = os.environ.get("EMAIL_PASS")
     TO_EMAIL = os.environ.get("TO_EMAIL")
     REPORTER = os.environ.get("REPORTER_NAME")
-    
+
     # --- GitHub API Query ---
     query = f"repo:urbanpiper/incidents is:issue is:open {REPORTER}"
     url = f"https://api.github.com/search/issues?q={query}"
@@ -27,7 +28,11 @@ def handler(event, context):
 
     # --- Check for stale issues (>2 days inactive) ---
     two_days_ago = datetime.utcnow() - timedelta(days=2)
-    stale_issues = [issue["html_url"] for issue in results if datetime.strptime(issue["updated_at"], "%Y-%m-%dT%H:%M:%SZ") < two_days_ago]
+    stale_issues = [
+        issue["html_url"] 
+        for issue in results 
+        if datetime.strptime(issue["updated_at"], "%Y-%m-%dT%H:%M:%SZ") < two_days_ago
+    ]
 
     # --- Send Email if stale issues found ---
     if stale_issues:
@@ -45,8 +50,17 @@ def handler(event, context):
                 server.starttls()
                 server.login(EMAIL_USER, EMAIL_PASS)
                 server.sendmail(EMAIL_USER, TO_EMAIL, msg.as_string())
-            return {"statusCode": 200, "body": "Email sent"}
+            return {
+                "statusCode": 200, 
+                "body": json.dumps({"message": "✅ Email sent"})
+            }
         except Exception as e:
-            return {"statusCode": 500, "body": f"Email sending failed: {e}"}
+            return {
+                "statusCode": 500, 
+                "body": json.dumps({"message": f"❌ Email sending failed: {str(e)}"})
+            }
     else:
-        return {"statusCode": 200, "body": "No stale issues found"}
+        return {
+            "statusCode": 200, 
+            "body": json.dumps({"message": "ℹ️ No stale issues found"})
+        }

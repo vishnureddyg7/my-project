@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trigger GitHub Incident Check</title>
+  <style>
+    body {
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background: #fafafa;
+      font-family: Arial, sans-serif;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #0077ff;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    #status {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <button onclick="triggerMail()">Start</button>
+    <div id="status"></div>
+  </div>
+
+  <script>
+    async function triggerMail() {
+      document.getElementById("status").innerText = "⏳ Checking...";
+      try {
+        let response = await fetch("/.netlify/functions/mail");
+        let data = await response.json();
+        if (response.ok) {
+          document.getElementById("status").innerText = data.message;
+        } else {
+          document.getElementById("status").innerText = "❌ Error: " + data.message;
+        }
+      } catch (err) {
+        document.getElementById("status").innerText = "❌ Failed: " + err;
+      }
+    }
+  </script>
+</body>
+</html>
