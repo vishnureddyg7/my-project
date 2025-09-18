@@ -4,13 +4,5 @@
 [functions]
   directory = "netlify/functions/"
 
-  # Specify a Python runtime for your functions
-  # This tells Netlify to use the Python build image
-  external_node_modules = []
-  
-  [build.environment]
-    NETLIFY_PYTHON_VERSION = "3.9" # or the Python version you use
-
-  # Optional: for the cron job
-  [functions.stale-issues]
-    schedule = "2 2 * * *"
+[build.environment]
+  NETLIFY_PYTHON_VERSION = "3.9"
