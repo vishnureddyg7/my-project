@@ -6,10 +6,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.header import Header
 import json
-#from dotenv import load_dotenv
-
-# Load environment variables from the .env file
-#load_dotenv()
 
 def handler(event, context):
     # --- Config from Environment Variables ---
@@ -19,7 +15,6 @@ def handler(event, context):
     TO_EMAIL = os.environ.get("TO_EMAIL")
     REPORTER = os.environ.get("REPORTER_NAME")
 
-    # Check if a reporter name is provided
     if not REPORTER:
         return {"statusCode": 400, "body": "REPORTER_NAME environment variable not set"}
 
@@ -61,13 +56,14 @@ def handler(event, context):
                 server.starttls()
                 server.login(EMAIL_USER, EMAIL_PASS)
                 server.sendmail(EMAIL_USER, TO_EMAIL, msg.as_string())
-            return {"statusCode": 200,"headers": { "Content-Type": "application/json" },"body": json.dumps({ "message": "✅ Email sent" })}
+
+            return {
+                "statusCode": 200,
+                "headers": {"Content-Type": "application/json"},
+                "body": json.dumps({"message": "✅ Email sent"})
+            }
 
         except Exception as e:
             return {"statusCode": 500, "body": f"❌ Email sending failed: {str(e)}"}
     else:
-        return {"statusCode": 200, "body": "ℹ️ No stale issues found"}
-
-#if __name__ == "__main__":
- #   response = handler(None, None)
-  #  print(response)///
+        return {"statusCode": 200, "body": json.dumps({"message": "ℹ️ No stale issues found"})}

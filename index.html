@@ -40,7 +40,7 @@
     async function triggerMail() {
       document.getElementById("status").innerText = "⏳ Checking...";
       try {
-        let response = await fetch("/netlify/functions/stale-issues");
+        let response = await fetch("/.netlify/functions/stale-issues");
         let data = await response.json();
         if (response.ok) {
           document.getElementById("status").innerText = data.message;

@@ -1,8 +1,6 @@
 [build]
+  functions = "netlify/functions"
   publish = "."
 
 [functions]
-  directory = "netlify/functions"
-
-[build.environment]
-  NETLIFY_PYTHON_VERSION = "3.9"
+  node_bundler = "esbuild"
